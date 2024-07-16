@@ -1,0 +1,39 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-ingress
+  namespace: argocd
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/backend-protocol: HTTPS
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTPS
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/subnets: subnet-0992fb71762d02729, subnet-0a9dcf032e3c5e1b2
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-south-1:444320815966:certificate/a180632b-ac1d-44d3-85a5-6d25a9912313
+    alb.ingress.kubernetes.io/conditions.argogrpc: >
+      [{"field":"http-header","httpHeaderConfig":{"httpHeaderName":
+      "Content-Type", "values":["application/grpc"]}}]
+spec:
+  ingressClassName: alb
+  rules:
+    - host: argocd.bikebazaar.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argogrpc
+                port:
+                  number: 443
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd-server
+                port:
+                  number: 443
+  tls:
+    - hosts:
+        - argocd.bikebazaar.com
