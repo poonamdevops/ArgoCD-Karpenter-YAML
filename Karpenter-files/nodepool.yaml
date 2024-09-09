@@ -46,6 +46,6 @@ spec:
         karpenter.sh/discovery: "WheelsEMI-prod-cluster" # replace with your cluster name
   amiSelectorTerms:
     #- id: "${ARM_AMI_ID}"
-    - id: "ami-054ae3fd6109e75f6"
+    - id: "ami-054ae3fd6109e75f6"   #change by seeing our existing AMI ID of nodes
 #   - id: "${GPU_AMI_ID}" # <- GPU Optimized AMD AMI
 #   - name: "amazon-eks-node-${K8S_VERSION}-*" # <- automatically upgrade when a new AL2 EKS Optimized AMI is released. This is unsafe for production workloads. Validate AMIs in lower environments before deploying them to production.
